@@ -7,9 +7,10 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 10f;
     public Vector3 direction;
+    private Vector2 respawnPos;
     private Rigidbody2D rb;
 
-    bool maskEquipped = false;
+    public bool maskEquipped = false;
 
     public Renderer rend;
 
@@ -21,7 +22,7 @@ public class PlayerController : MonoBehaviour
     public float maxGauge;
     public float maskCost;
 
-    public float rechargeRate;
+    public float rechargeRate = 50;
 
     public Coroutine recharge;
 
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         originalColor = rend.material.color;
+        respawnPos = transform.position;
     }
 
     // Update is called once per frame
@@ -40,7 +42,6 @@ public class PlayerController : MonoBehaviour
         MaskOn();
         MaskOff();
         DecreaseGauge();
-        IncreaseGauge();
     }
 
     /// <summary>
@@ -131,6 +132,12 @@ public class PlayerController : MonoBehaviour
             maskGauge.fillAmount = gauge / maxGauge;
             yield return new WaitForSeconds(.1f);
         }
+    }
+
+    public void Respawn()
+    {
+        transform.position = respawnPos;
+        gauge += rechargeRate;
     }
 
  }

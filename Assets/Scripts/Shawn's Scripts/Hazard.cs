@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public EnemyScript enemy;
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (collision.GetComponent<PlayerController>())
+        {
+            enemy.CheckPlayerMask();
+        }
     }
 }

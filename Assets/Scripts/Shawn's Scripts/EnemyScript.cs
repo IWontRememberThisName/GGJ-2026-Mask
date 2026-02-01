@@ -2,70 +2,79 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour
 {
-    public Transform player;
-    public float Range = 8f;
-    public float Speed = 8f;
-    public float jumpForce = 8f;
-    public int Health = 1;
-    public PlayerController playerController;
+    public PlayerController player;
+    public GameObject playerSprite;
+    public bool chasePlayer = false;
+    public float speed = 10f;
 
-    public LayerMask obstacleMask;
-    public LayerMask playerMask;
+    public float distanceForChase = 4f;
 
-    private Rigidbody2D RB;
-    
+    public NavMeshAgent nav;
 
-    // Start is called before the first frame update
-    void Start()
+    public Transform target;
+
+    public Vector2 startPosition;
+    private void Start()
     {
-        RB = GetComponent<Rigidbody2D>();
-        //Find our player and where they are, basicly setting up the update function.
-        if (player == null)
-            player = GameObject.FindGameObjectWithTag("Player").transform;
-
-        // Set layer masks (if not assigned in Inspector)
-        obstacleMask = LayerMask.GetMask("Obstacle");
-        playerMask = LayerMask.GetMask("Player");
+        playerSprite = GameObject.Find("Player");
+        Debug.Log("PlayerFound");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        // Rotate to face the player
-        Vector3 lookDir = (player.position - transform.position).normalized;
-        lookDir.y = 0; //locks the position so it doesnt move/bug out if the player runs intot he enemy 
-        transform.forward = lookDir;
-        if (player == null) return;
+        float distanceToPlayer = Vector2.Distance(transform.position, playerSprite.transform.position);
+        float distanceChasedCombat = Vector2.Distance(transform.position, startPosition);
 
-        Vector3 dir = player.position - transform.position;
-        float Distance = dir.magnitude;
-        // 
-        if (Distance > Range)
+        if (distanceToPlayer <= distanceForChase)
         {
-            RB.velocity = Vector3.zero;
-            return;
-        }
-
-        //combine the layers so it only chcks for a player or obsticals at the same time
-        int CombinedLayers = obstacleMask | playerMask;
-        RaycastHit hit;
-        //Raycast for the trace back onto the player
-        bool hasHit = Physics.Raycast(transform.position, dir.normalized, out hit, Distance, CombinedLayers);
-
-        Debug.DrawRay(transform.position, dir.normalized * Distance, Color.cyan);
-        //when the player is visible and no raycast has hit a layer that has the Obstical tag
-        if (hasHit && hit.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
-        {
-
-            RB.velocity = dir.normalized * Speed;
+            CheckPlayerMask();
+            if (chasePlayer)
+            {
+                target = playerSprite.transform;
+                nav.SetDestination(target.transform.position);
+                nav.speed = speed;
+            }
         }
         else
         {
-            // Wall in the way or no line of sight
-            RB.velocity = Vector3.zero;
+            chasePlayer = false;
+        }
+    }
+
+    public void CheckPlayerMask()
+    {
+        if (player.maskEquipped)
+        {
+            chasePlayer = false;
+        }
+        else
+        {
+            chasePlayer = true;
+        }
+    }
+
+    public void ChasePlayer()
+    {
+        CheckPlayerMask();
+        if (chasePlayer)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, playerSprite.transform.position, speed * Time.deltaTime);
+        }
+        else
+        {
+            transform.position = transform.position;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<PlayerController>())
+        {
+            player.Respawn();
         }
     }
 }
