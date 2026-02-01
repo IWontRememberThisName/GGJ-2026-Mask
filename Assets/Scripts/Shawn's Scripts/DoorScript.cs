@@ -10,6 +10,7 @@ public class DoorScript : MonoBehaviour
     {
         //Sets the touched object's position to the teleport point's position
         other.transform.position = teleportPoint.position;
+        print("overlapped with something");
     }
 }
 
