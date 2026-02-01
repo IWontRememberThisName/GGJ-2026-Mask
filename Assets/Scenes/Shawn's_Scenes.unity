@@ -559,6 +559,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   direction: {x: 0, y: 0, z: 0}
+  rend: {fileID: 2140033364}
+  originalColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!212 &2140033364 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 786021265915493170, guid: f4c8a5fec2bc6c249b1d26705abb630a, type: 3}
+  m_PrefabInstance: {fileID: 4175448258913905413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2140033365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7582886473799439155, guid: f4c8a5fec2bc6c249b1d26705abb630a, type: 3}
@@ -634,6 +641,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 786021265915493170, guid: f4c8a5fec2bc6c249b1d26705abb630a, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 521b7fea46efd5e4e9296b58ceb098be, type: 2}
     - target: {fileID: 4861478716850699655, guid: f4c8a5fec2bc6c249b1d26705abb630a, type: 3}
       propertyPath: m_Name
       value: Circle
