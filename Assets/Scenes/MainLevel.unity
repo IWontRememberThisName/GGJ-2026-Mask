@@ -1820,6 +1820,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Library: []
   m_SpriteLibraryAsset: {fileID: 0}
+--- !u!114 &2059846533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326212419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b6f6278d1ef6347a09dffba1fa9a86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  direction: {x: 0, y: 0, z: 0}
+  rend: {fileID: 0}
+  originalColor: {r: 0, g: 0, b: 0, a: 0}
+  maskGauge: {fileID: 0}
+  gauge: 0
+  maxGauge: 0
+  maskCost: 0
+  rechargeRate: 0
 --- !u!1001 &1974177944818000258
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2060,6 +2081,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 20x11 pixels please work@3x (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1921681944411445964, guid: 9a5f1e9f32bcf214ba94bc347fba515d, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 8469831570845963067, guid: 9a5f1e9f32bcf214ba94bc347fba515d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -356.76
@@ -2113,6 +2138,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1921681944411445964, guid: 9a5f1e9f32bcf214ba94bc347fba515d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2059846530}
+    - targetCorrespondingSourceObject: {fileID: 1921681944411445964, guid: 9a5f1e9f32bcf214ba94bc347fba515d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2059846533}
   m_SourcePrefab: {fileID: 100100000, guid: 9a5f1e9f32bcf214ba94bc347fba515d, type: 3}
 --- !u!1001 &5812534505335005628
 PrefabInstance:
