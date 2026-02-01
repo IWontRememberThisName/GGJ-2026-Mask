@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,17 @@ public class PlayerController : MonoBehaviour
     public Renderer rend;
 
     public Color originalColor;
+
+    public Image maskGauge;
+
+    public float gauge;
+    public float maxGauge;
+    public float maskCost;
+
+    public float rechargeRate;
+
+    public Coroutine recharge;
+
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +39,8 @@ public class PlayerController : MonoBehaviour
         Movement();
         MaskOn();
         MaskOff();
+        DecreaseGauge();
+        IncreaseGauge();
     }
 
     /// <summary>
@@ -62,12 +76,13 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (!maskEquipped)
+            if (!maskEquipped && gauge != 0)
             {
                 maskEquipped = true;
                 rend.material.color = Color.red;
-                print("test");
+                //print("test");
             }
+            
         }
     }
     /// <summary>
@@ -75,14 +90,46 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void MaskOff()
     {
-
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) || gauge == 0)
         {
             if (maskEquipped)
             {
                 maskEquipped = false;
                 rend.material.color = originalColor;
             }
+        }
+    }
+
+    private void DecreaseGauge()
+    {
+        if (maskEquipped)
+        {
+            gauge -= maskCost * Time.deltaTime;
+            if (gauge < 0) gauge = 0;
+            maskGauge.fillAmount = gauge / maxGauge;
+        }
+
+    }
+    private void IncreaseGauge()
+    {
+        if (!maskEquipped)
+        {
+            if (recharge != null) StopCoroutine(recharge);
+            recharge = StartCoroutine(RechargeMask());
+            
+        }
+    }
+
+    public IEnumerator RechargeMask()
+    {
+        yield return new WaitForSeconds(1f);
+        while (gauge < maxGauge)
+        {
+            gauge += rechargeRate / 10f;
+            print("test");
+            if(gauge > maxGauge) gauge = maxGauge;
+            maskGauge.fillAmount = gauge / maxGauge;
+            yield return new WaitForSeconds(.1f);
         }
     }
 
